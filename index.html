@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M9 Cannabis Healthcare Visibility Readiness — NSAG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Syne:wght@500;600;700&family=Manrope:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --nsag: #4D45A8;
+    --nsag-light: #E8E5F5;
+    --m9: #1B6B8A;
+    --m9-light: #E4F2F7;
+    --cream: #F6F3EC;
+    --ink: #1C1B1F;
+    --ink-mid: #4A4656;
+    --ink-soft: #8A8497;
+    --white: #FFFFFF;
+    --pioneering: #2E5A28;
+    --emerging: #1B7A68;
+    --developing: #B8842A;
+    --early: #C24A2E;
+    --border: rgba(77,69,168,0.12);
+    --shadow: 0 2px 24px rgba(28,27,31,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .progress-rail {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--nsag-light);
+    z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--m9);
+    transition: width 0.4s ease;
+  }
+
+  header {
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    color: var(--nsag);
+    text-transform: uppercase;
+  }
+  .module-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--m9);
+    background: var(--m9-light);
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .screen {
+    display: none;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    min-height: calc(100vh - 61px);
+  }
+  .screen.active { display: flex; }
+
+  .welcome-card {
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+  }
+  .welcome-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--m9);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .welcome-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .welcome-title em {
+    font-style: italic;
+    color: var(--nsag);
+  }
+  .welcome-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    margin-bottom: 12px;
+  }
+  .welcome-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 40px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--nsag);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    padding: 14px 36px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    border-radius: 2px;
+  }
+  .btn-primary:hover { background: #3D3698; }
+  .btn-primary:active { transform: scale(0.98); }
+
+  .disclaimer {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .question-wrap {
+    max-width: 680px;
+    width: 100%;
+  }
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .q-dimension {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--m9);
+    text-transform: uppercase;
+  }
+  .q-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .q-text {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(18px, 2.5vw, 22px);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-bottom: 32px;
+    padding-left: 16px;
+    border-left: 3px solid var(--m9);
+  }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .option {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-mid);
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    text-align: left;
+  }
+  .option:hover {
+    border-color: var(--nsag);
+    color: var(--ink);
+    background: var(--nsag-light);
+  }
+  .option.selected {
+    border-color: var(--nsag);
+    background: var(--nsag-light);
+    color: var(--nsag);
+    font-weight: 600;
+  }
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .btn-back {
+    background: none;
+    border: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 10px 0;
+    transition: color 0.2s;
+  }
+  .btn-back:hover { color: var(--ink); }
+  .btn-next {
+    background: var(--nsag);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 28px;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-next:not(:disabled):hover { background: #3D3698; }
+
+  .calculating-wrap {
+    text-align: center;
+    max-width: 480px;
+  }
+  .calc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .calc-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 96px;
+    font-weight: 600;
+    color: var(--nsag);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .calc-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--nsag-light);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .calc-fill {
+    height: 100%;
+    background: var(--m9);
+    width: 0;
+    transition: width 2s ease;
+  }
+
+  .result-wrap {
+    max-width: 680px;
+    width: 100%;
+  }
+  .result-header {
+    margin-bottom: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+  .result-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .tier-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 80px);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .tier-name.revealed { opacity: 1; transform: translateY(0); }
+  .tier-name.pioneering { color: var(--pioneering); }
+  .tier-name.emerging   { color: var(--emerging); }
+  .tier-name.developing { color: var(--developing); }
+  .tier-name.early      { color: var(--early); }
+
+  .tier-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    max-width: 520px;
+  }
+
+  .gate-section {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .gate-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .gate-desc {
+    font-size: 14px;
+    color: var(--ink-mid);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .gate-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .gate-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    color: var(--ink);
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .gate-input:focus { border-color: var(--nsag); }
+  .btn-gate {
+    background: var(--m9);
+    color: var(--white);
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+  .btn-gate:hover { background: #155878; }
+
+  .dimensions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .dimension-row {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+  }
+  .dim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .dim-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .dim-tier {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+  .dim-tier.pioneering { background: #E8F5E6; color: var(--pioneering); }
+  .dim-tier.emerging   { background: #E4F3F0; color: var(--emerging); }
+  .dim-tier.developing { background: #FBF3E4; color: var(--developing); }
+  .dim-tier.early      { background: #FBE9E6; color: var(--early); }
+
+  .dim-bar-rail {
+    height: 4px;
+    background: var(--nsag-light);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .dim-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.8s ease;
+  }
+  .dim-finding {
+    font-size: 13px;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+
+  .blurred { filter: blur(6px); pointer-events: none; user-select: none; }
+
+  .cta-section {
+    margin-top: 32px;
+    padding: 28px 32px;
+    background: var(--nsag);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .cta-text { color: var(--white); }
+  .cta-text strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .cta-text span { font-size: 13px; opacity: 0.8; }
+  .btn-cta {
+    background: var(--white);
+    color: var(--nsag);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    padding: 11px 22px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .btn-cta:hover { opacity: 0.9; }
+
+  .success-msg {
+    display: none;
+    background: #E8F5E6;
+    border: 1px solid var(--pioneering);
+    border-radius: 4px;
+    padding: 14px 20px;
+    font-size: 14px;
+    color: var(--pioneering);
+    margin-top: 12px;
+  }
+
+  footer {
+    padding: 20px 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-text { font-size: 12px; color: var(--ink-soft); }
+  .footer-link { font-size: 12px; color: var(--nsag); text-decoration: none; }
+  .footer-link:hover { text-decoration: underline; }
+
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .screen { padding: 32px 16px; }
+    .gate-form { flex-direction: column; }
+    .cta-section { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+<header>
+  <div class="logo">NSAG</div>
+  <div class="module-badge">M9 · Cannabis Healthcare Visibility</div>
+</header>
+
+<!-- WELCOME -->
+<div class="screen active" id="screenWelcome">
+  <div class="welcome-card">
+    <div class="welcome-eyebrow">Neurocognitive Systems Advisory Group</div>
+    <h1 class="welcome-title">Cannabis Healthcare<br><em>Visibility Readiness</em></h1>
+    <p class="welcome-desc">Healthcare organizations cannot manage patient safety risks they cannot measure. This assessment evaluates your organization's infrastructure for making cannabis visible — in clinical documentation, provider training, patient disclosure, behavioral risk intelligence, health equity tracking, and adverse event capture.</p>
+    <p class="welcome-meta">6 dimensions · 12 questions · 10 minutes</p>
+    <button class="btn-primary" onclick="startAssessment()">Begin Assessment</button>
+    <p class="disclaimer">Your overall tier is shown immediately at no cost. Full dimension breakdown delivered by email.</p>
+  </div>
+</div>
+
+<!-- QUESTIONS -->
+<div class="screen" id="screenQuestion">
+  <div class="question-wrap">
+    <div class="q-meta">
+      <span class="q-dimension" id="qDimension"></span>
+      <span class="q-counter" id="qCounter"></span>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="q-nav">
+      <button class="btn-back" id="btnBack" onclick="prevQuestion()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATING -->
+<div class="screen" id="screenCalculating">
+  <div class="calculating-wrap">
+    <div class="calc-label">Calculating your score</div>
+    <div class="calc-number" id="calcNumber">0</div>
+    <div class="calc-bar"><div class="calc-fill" id="calcFill"></div></div>
+    <div class="calc-label" id="calcStatus">Analyzing disclosure infrastructure...</div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screenResult">
+  <div class="result-wrap">
+    <div class="result-header">
+      <div class="result-eyebrow">Your organization is</div>
+      <div class="tier-name" id="tierName"></div>
+      <p class="tier-desc" id="tierDesc"></p>
+    </div>
+
+    <div class="gate-section" id="gateSection">
+      <div class="gate-title">See your full dimension-by-dimension breakdown</div>
+      <div class="gate-desc">Your complete report shows where you score on each of the six cannabis visibility dimensions — with specific findings and recommended next steps for your tier.</div>
+      <div class="gate-form">
+        <input type="email" class="gate-input" id="gateEmail" placeholder="Work email address" />
+        <input type="text"  class="gate-input" id="gateOrg"   placeholder="Organization name" />
+        <button class="btn-gate" onclick="submitGate()">Send My Report</button>
+      </div>
+      <div class="success-msg" id="gateSuccess">Received. We'll follow up within 24 hours with your full dimension report.</div>
+    </div>
+
+    <div class="dimensions blurred" id="dimensionsSection"></div>
+
+    <div class="cta-section">
+      <div class="cta-text">
+        <strong>Ready to build visibility infrastructure?</strong>
+        <span>NSAG M9 advisory — from $8,500 for a 90-day engagement.</span>
+      </div>
+      <button class="btn-cta" onclick="window.location.href='mailto:collins.ra@northeastern.edu?subject=NSAG M9 Advisory Inquiry'">Talk to an Advisor</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-text">© 2026 RN Collins LLC · Aloha AI Consulting · NSAG Framework</span>
+  <a href="mailto:collins.ra@northeastern.edu" onclick="navigator.clipboard.writeText('collins.ra@northeastern.edu')" class="footer-link">Contact the Architect</a>
+</footer>
+
+<script>
+const QUESTIONS = [
+  {
+    dimension: "Patient Disclosure Infrastructure",
+    dimKey: "disclosure",
+    text: "Does your organization have a formal protocol for asking about cannabis use during intake in a non-stigmatizing, structured way?",
+    options: [
+      { text: "Yes — standardized, non-judgmental cannabis screening built into intake across all relevant departments", score: 3 },
+      { text: "Cannabis is included in substance use screening but framing is neutral at best", score: 2 },
+      { text: "Cannabis is asked about inconsistently; provider discretion determines if and how", score: 1 },
+      { text: "Cannabis use is not systematically asked about at intake", score: 0 }
+    ]
+  },
+  {
+    dimension: "Patient Disclosure Infrastructure",
+    dimKey: "disclosure",
+    text: "Are patients informed that their cannabis disclosure will not be used in ways that harm them — through insurance, employment, custody, or immigration channels?",
+    options: [
+      { text: "Yes — explicit non-discrimination and confidentiality protections are communicated and documented", score: 3 },
+      { text: "Patients are generally reassured but no formal protection framework exists", score: 2 },
+      { text: "Disclosure risks are not addressed; patients make this determination independently", score: 1 },
+      { text: "No — the implications of disclosure are not addressed by the organization", score: 0 }
+    ]
+  },
+  {
+    dimension: "Provider Training",
+    dimKey: "training",
+    text: "Have clinical staff received formal training on cannabis pharmacology, drug interactions, and patient communication?",
+    options: [
+      { text: "Yes — formal training completed organization-wide, updated with regulatory and clinical changes", score: 3 },
+      { text: "Some staff trained; coverage is incomplete, particularly for high-risk interaction knowledge", score: 2 },
+      { text: "Informal awareness only; no structured training has occurred", score: 1 },
+      { text: "No training — staff manage cannabis disclosures without formal preparation", score: 0 }
+    ]
+  },
+  {
+    dimension: "Provider Training",
+    dimKey: "training",
+    text: "Do providers in your organization follow a non-stigmatizing communication standard when cannabis comes up in a clinical encounter?",
+    options: [
+      { text: "Yes — communication standards are formalized, practiced, and assessed in training", score: 3 },
+      { text: "Providers have general awareness; communication is left to individual style and judgment", score: 2 },
+      { text: "Some providers manage this well; others do not — no organizational standard exists", score: 1 },
+      { text: "No — cannabis conversations are handled inconsistently, often with implicit or explicit stigma", score: 0 }
+    ]
+  },
+  {
+    dimension: "Documentation Systems",
+    dimKey: "documentation",
+    text: "Does your organization have a documentation pathway for therapeutic cannabis use that does not default to pathologizing ICD codes?",
+    options: [
+      { text: "Yes — a non-pathologizing documentation practice is actively in use", score: 3 },
+      { text: "In development — a policy has been drafted but implementation is underway", score: 2 },
+      { text: "Discussed at leadership level; not yet implemented", score: 1 },
+      { text: "No — only pathologizing ICD codes are used; no therapeutic use pathway exists", score: 0 }
+    ]
+  },
+  {
+    dimension: "Documentation Systems",
+    dimKey: "documentation",
+    text: "Are cannabis-related fields in your EHR structured, searchable, and integrated into medication reconciliation?",
+    options: [
+      { text: "Yes — cannabis fields are structured, consistently used, and integrated into medication reconciliation", score: 3 },
+      { text: "Cannabis is documented in notes but not in structured, searchable EHR fields", score: 2 },
+      { text: "Documentation is inconsistent — some providers use structured fields, others do not", score: 1 },
+      { text: "Cannabis is not documented in structured EHR fields", score: 0 }
+    ]
+  },
+  {
+    dimension: "Behavioral Risk Intelligence",
+    dimKey: "behavioral",
+    text: "Does your organization capture product-specific cannabis use information — potency, delivery method, frequency, co-use — relevant to clinical risk assessment?",
+    options: [
+      { text: "Yes — structured behavioral screening captures product type, frequency, delivery method, and co-use", score: 3 },
+      { text: "Some product-level information is collected informally in clinical notes", score: 2 },
+      { text: "Quantity or frequency is occasionally noted; product specifics are not captured", score: 1 },
+      { text: "No product or behavioral information is systematically collected", score: 0 }
+    ]
+  },
+  {
+    dimension: "Behavioral Risk Intelligence",
+    dimKey: "behavioral",
+    text: "Are high-risk cannabis drug interactions — anticoagulants, antiepileptics, immunosuppressants, psychotropics — flagged in your clinical decision support system?",
+    options: [
+      { text: "Yes — drug-cannabis interaction alerts are built into the CDS system and actively maintained", score: 3 },
+      { text: "Some interactions are flagged; coverage is incomplete and not systematically updated", score: 2 },
+      { text: "No CDS alerts exist; providers rely on individual knowledge", score: 1 },
+      { text: "Cannabis interactions are not addressed in clinical decision support", score: 0 }
+    ]
+  },
+  {
+    dimension: "Health Equity Integration",
+    dimKey: "equity",
+    text: "Does your organization track cannabis disclosure patterns by patient demographics to identify and address equity gaps in clinical response?",
+    options: [
+      { text: "Yes — demographic analysis of cannabis disclosure and clinical response is conducted and used to improve practice", score: 3 },
+      { text: "Some demographic data is available but not systematically analyzed for equity purposes", score: 2 },
+      { text: "No equity-focused cannabis data analysis has occurred", score: 1 },
+      { text: "No demographic tracking of cannabis disclosure or clinical outcomes exists", score: 0 }
+    ]
+  },
+  {
+    dimension: "Health Equity Integration",
+    dimKey: "equity",
+    text: "Are patient populations most affected by cannabis criminalization specifically included in your organization's cannabis health education and outreach?",
+    options: [
+      { text: "Yes — education is tailored to reach underserved populations with culturally adapted materials", score: 3 },
+      { text: "General education materials are available; targeted outreach has not occurred", score: 2 },
+      { text: "Education is provider-facing only; patient-facing equity work has not been developed", score: 1 },
+      { text: "No cannabis health education exists for patient populations", score: 0 }
+    ]
+  },
+  {
+    dimension: "Adverse Event Capture",
+    dimKey: "adverse",
+    text: "Does your organization have a process for identifying and documenting cannabis-related adverse events and drug interactions that occur in clinical care?",
+    options: [
+      { text: "Yes — structured adverse event reporting includes cannabis attribution and is reviewed for pattern analysis", score: 3 },
+      { text: "Adverse events may be documented in notes; no structured cannabis attribution process exists", score: 2 },
+      { text: "Adverse events are reported through general channels without cannabis-specific tracking", score: 1 },
+      { text: "No adverse event capture process addresses cannabis specifically", score: 0 }
+    ]
+  },
+  {
+    dimension: "Adverse Event Capture",
+    dimKey: "adverse",
+    text: "Do cannabis-related adverse events feed into quality improvement processes and inform clinical protocols?",
+    options: [
+      { text: "Yes — cannabis adverse events are reviewed in QI cycles and actively shape clinical standards", score: 3 },
+      { text: "Some events are escalated informally; no formal QI pathway exists", score: 2 },
+      { text: "Events are documented but not analyzed for quality improvement", score: 1 },
+      { text: "No pathway from cannabis adverse event documentation to quality improvement exists", score: 0 }
+    ]
+  }
+];
+
+const DIM_FINDINGS = {
+  disclosure: {
+    pioneering: "Patient disclosure is actively supported through structured, non-stigmatizing screening, explicit confidentiality protections, and documented organizational commitment to non-discrimination.",
+    emerging: "Some disclosure infrastructure exists but formal protections are incomplete. Patients cannot rely on consistent screening or documented safeguards across all clinical contexts.",
+    developing: "Disclosure depends entirely on individual provider behavior. Patients cannot know in advance whether disclosure is safe or how their information will be used.",
+    early: "No disclosure infrastructure exists. Patients bear the full weight of assessing their own disclosure risk with no organizational support. The system is blind by design."
+  },
+  training: {
+    pioneering: "All relevant clinical staff have received formal cannabis education covering pharmacology, drug interactions, and non-stigmatizing communication. Training is maintained as clinical standards evolve.",
+    emerging: "Some staff are trained but coverage is incomplete. High-risk interaction knowledge — the area with the most direct patient safety implications — is the most common gap.",
+    developing: "Informal awareness exists but no structured training has occurred. Providers are managing cannabis disclosures without the preparation to do so safely or equitably.",
+    early: "No training exists. Clinical staff encountering cannabis disclosures have no organizational preparation. Patient safety depends on individual knowledge, which is inconsistent and undocumented."
+  },
+  documentation: {
+    pioneering: "Cannabis is documented in structured, searchable EHR fields using non-pathologizing frameworks. Documentation is integrated into medication reconciliation and actively informs care planning.",
+    emerging: "Some cannabis documentation exists but is not consistently structured or searchable. Therapeutic use cannot be distinguished from problematic use in aggregate data.",
+    developing: "Cannabis documentation is inconsistent and clinician-dependent. The organization cannot generate meaningful data on its patient population's cannabis use from structured fields.",
+    early: "Therapeutic cannabis use is either undocumented or captured only in pathologizing codes. The EHR cannot see what patients are using — or documents it in ways that create downstream harm."
+  },
+  behavioral: {
+    pioneering: "Behavioral risk intelligence for cannabis is structured, product-specific, and integrated into clinical decision support. High-risk interaction alerts are current, maintained, and in active use.",
+    emerging: "Some behavioral information is captured informally but is not structured for analysis. Clinical decision support for cannabis interactions is partial or not systematically updated.",
+    developing: "Quantity or frequency is occasionally noted but product specifics, delivery method, and co-use are not captured. Clinical risk assessment cannot be completed with available data.",
+    early: "No behavioral cannabis information is systematically collected. Clinical decision support does not address cannabis interactions. Providers are operating without the information needed to assess risk."
+  },
+  equity: {
+    pioneering: "Cannabis health equity is tracked demographically and acted upon. Community education reaches the populations most affected by criminalization and healthcare marginalization with culturally adapted materials.",
+    emerging: "Equity intention is present but demographic analysis of cannabis disclosure and clinical response has not been conducted. Education is available but not targeted to the highest-risk populations.",
+    developing: "Equity has not yet been operationalized in cannabis healthcare work. No targeted community outreach has occurred for the populations most affected by cannabis healthcare invisibility.",
+    early: "No equity framework exists for cannabis healthcare visibility. The populations most affected by disclosure risk and adverse event invisibility are the least served by your current approach."
+  },
+  adverse: {
+    pioneering: "Cannabis adverse events are captured through structured reporting, attributed accurately, and feed quality improvement cycles that shape clinical protocols. The organization is learning from its own data.",
+    emerging: "Some adverse events are documented but attribution to cannabis is inconsistent. Quality improvement does not yet systematically incorporate cannabis adverse event data.",
+    developing: "Adverse events are reported through general channels without cannabis-specific tracking. Patterns are almost certainly present but invisible to clinical leadership.",
+    early: "No cannabis-specific adverse event capture exists. Events are occurring and going unattributed. The organization cannot see the patient safety gaps that already exist in its population."
+  }
+};
+
+const TIER_INFO = {
+  pioneering: {
+    label: "Pioneering",
+    cssClass: "pioneering",
+    desc: "Your organization has built meaningful cannabis healthcare visibility infrastructure across multiple dimensions. Disclosure pathways are structured and protected, providers are trained, documentation is non-pathologizing and searchable, behavioral risk is captured, equity is tracked, and adverse events feed quality improvement. The work now is maintaining these systems as the regulatory and clinical landscape continues to shift."
+  },
+  emerging: {
+    label: "Emerging",
+    cssClass: "emerging",
+    desc: "Your organization is building in the right direction. Meaningful structures exist in several dimensions — provider awareness, partial documentation, or equity intention — but gaps remain. This is the tier where targeted investment produces the most measurable improvement in patient safety and documentation quality."
+  },
+  developing: {
+    label: "Developing",
+    cssClass: "developing",
+    desc: "Your organization has acknowledged the cannabis visibility problem but has not yet built the infrastructure to address it systematically. Individual providers or departments may have developed local solutions, but organizational systems are missing. The risks of adverse events, documentation failure, and inequitable care are present and compounding."
+  },
+  early: {
+    label: "Early Stage",
+    cssClass: "early",
+    desc: "Cannabis healthcare visibility infrastructure does not yet exist in your organization. Patients are managing disclosure risks individually, providers are operating without adequate training, documentation is pathologizing or absent, and adverse events are almost certainly going uncaptured. The path forward starts with leadership alignment on the scope of the problem."
+  }
+};
+
+let currentQ = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let scores = {};
+
+function startAssessment() {
+  document.getElementById('screenWelcome').classList.remove('active');
+  document.getElementById('screenQuestion').classList.add('active');
+  renderQuestion(0);
+}
+
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  document.getElementById('qDimension').textContent = q.dimension;
+  document.getElementById('qCounter').textContent = `${idx + 1} of ${QUESTIONS.length}`;
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('btnBack').style.visibility = idx === 0 ? 'hidden' : 'visible';
+
+  const optDiv = document.getElementById('qOptions');
+  optDiv.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[idx] === i ? ' selected' : '');
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(idx, i, btn);
+    optDiv.appendChild(btn);
+  });
+
+  document.getElementById('progressFill').style.width = ((idx / QUESTIONS.length) * 100) + '%';
+  document.getElementById('btnNext').disabled = answers[idx] === null;
+  currentQ = idx;
+}
+
+function selectOption(qIdx, optIdx, btn) {
+  answers[qIdx] = optIdx;
+  document.querySelectorAll('.option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('btnNext').disabled = false;
+}
+
+function nextQuestion() {
+  if (currentQ < QUESTIONS.length - 1) {
+    currentQ++;
+    renderQuestion(currentQ);
+  } else {
+    showCalculating();
+  }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion(currentQ);
+  }
+}
+
+function showCalculating() {
+  document.getElementById('screenQuestion').classList.remove('active');
+  document.getElementById('screenCalculating').classList.add('active');
+  document.getElementById('progressFill').style.width = '100%';
+
+  const phases = [
+    "Analyzing disclosure infrastructure...",
+    "Reviewing provider training coverage...",
+    "Assessing documentation systems...",
+    "Evaluating behavioral risk intelligence...",
+    "Measuring health equity integration...",
+    "Reviewing adverse event capture...",
+    "Generating your report..."
+  ];
+  let phase = 0;
+  const phaseInterval = setInterval(() => {
+    if (phase < phases.length) {
+      document.getElementById('calcStatus').textContent = phases[phase];
+      phase++;
+    }
+  }, 400);
+
+  const finalScore = calculateScores();
+  let count = 0;
+  const countInterval = setInterval(() => {
+    count = Math.min(count + 2, finalScore.overall);
+    document.getElementById('calcNumber').textContent = count;
+    if (count >= finalScore.overall) clearInterval(countInterval);
+  }, 30);
+
+  document.getElementById('calcFill').style.width = finalScore.overall + '%';
+
+  setTimeout(() => {
+    clearInterval(phaseInterval);
+    showResults(finalScore);
+  }, 3000);
+}
+
+function calculateScores() {
+  const dimRaw = {}, dimCount = {};
+  QUESTIONS.forEach((q, i) => {
+    if (!dimRaw[q.dimKey]) { dimRaw[q.dimKey] = 0; dimCount[q.dimKey] = 0; }
+    dimRaw[q.dimKey] += q.options[answers[i]].score;
+    dimCount[q.dimKey]++;
+  });
+  const dimNorm = {};
+  Object.keys(dimRaw).forEach(k => {
+    dimNorm[k] = Math.round((dimRaw[k] / (dimCount[k] * 3)) * 100);
+  });
+  scores = dimNorm;
+  const overall = Math.round(Object.values(dimNorm).reduce((a, b) => a + b, 0) / Object.keys(dimNorm).length);
+  return { overall, dimensions: dimNorm };
+}
+
+function getTier(s) {
+  return s >= 80 ? 'pioneering' : s >= 60 ? 'emerging' : s >= 40 ? 'developing' : 'early';
+}
+
+function showResults(finalScore) {
+  document.getElementById('screenCalculating').classList.remove('active');
+  document.getElementById('screenResult').classList.add('active');
+
+  const tier = getTier(finalScore.overall);
+  const info = TIER_INFO[tier];
+
+  const tierEl = document.getElementById('tierName');
+  tierEl.textContent = info.label;
+  tierEl.className = 'tier-name ' + info.cssClass;
+  setTimeout(() => tierEl.classList.add('revealed'), 100);
+
+  document.getElementById('tierDesc').textContent = info.desc;
+  renderDimensions(finalScore.dimensions);
+}
+
+function renderDimensions(dimNorm) {
+  const colors = { pioneering: '#2E5A28', emerging: '#1B7A68', developing: '#B8842A', early: '#C24A2E' };
+  const dimLabels = {
+    'disclosure': 'Patient Disclosure Infrastructure',
+    'training': 'Provider Training & Competency',
+    'documentation': 'Documentation Systems',
+    'behavioral': 'Behavioral Risk Intelligence',
+    'equity': 'Health Equity Integration',
+    'adverse': 'Adverse Event Capture'
+  };
+  const container = document.getElementById('dimensionsSection');
+  container.innerHTML = '';
+  Object.keys(dimNorm).forEach(key => {
+    const score = dimNorm[key], tier = getTier(score), label = dimLabels[key] || key;
+    const finding = DIM_FINDINGS[key] ? DIM_FINDINGS[key][tier] : 'Score: ' + score + '/100';
+    container.innerHTML += `<div class="dimension-row"><div class="dim-header"><span class="dim-name">${label}</span><span class="dim-tier ${tier}">${tier === 'early' ? 'Early Stage' : tier.charAt(0).toUpperCase() + tier.slice(1)}</span></div><div class="dim-bar-rail"><div class="dim-bar-fill" style="width:${score}%;background:${colors[tier]}"></div></div><p class="dim-finding">${finding}</p></div>`;
+  });
+}
+
+function submitGate() {
+  const email = document.getElementById('gateEmail').value;
+  const org   = document.getElementById('gateOrg').value;
+  if (!email || !email.includes('@')) {
+    document.getElementById('gateEmail').focus();
+    return;
+  }
+  fetch('https://nsag-api.vercel.app/api/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email, org,
+      source: 'nsag-m9',
+      module: 'M9',
+      tier: getTier(Object.values(scores).reduce((a, b) => a + b, 0) / Object.keys(scores).length),
+      scores,
+      timestamp: new Date().toISOString()
+    })
+  }).catch(() => {});
+
+  document.getElementById('gateSuccess').style.display = 'block';
+  document.getElementById('dimensionsSection').classList.remove('blurred');
+  document.getElementById('gateSection').style.opacity = '0.5';
+  document.getElementById('gateSection').style.pointerEvents = 'none';
+}
+</script>
+</body>
+</html>
