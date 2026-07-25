@@ -191,7 +191,7 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
 <!-- CINEMATIC REVEAL OVERLAY -->
 <div class="reveal-overlay" id="reveal-overlay">
   <div class="reveal-tier-name" id="reveal-tier-text"></div>
-  <div class="reveal-sub" id="reveal-sub-text">Your governance tier</div>
+  <div class="reveal-sub" id="reveal-sub-text">Your governance maturity</div>
 </div>
 <!-- RATIONALE BAR -->
 <div class="rationale-bar" id="rationale-bar"></div>
@@ -239,6 +239,7 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
         <div class="intro-tag">M9 · Cannabis Healthcare Visibility</div>
         <h1 class="intro-h">How well does your institution govern cannabis healthcare visibility?</h1>
         <p class="intro-sub">35.1% of patients report cannabis use confidentially. 4.8% have it in their chart. The same patients. The pharmacology gap between those two numbers is producing invisible drug interactions in your patient population right now.</p>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin:-0.25rem 0 1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px">This is an educational self-assessment, not a validated test or audit. Your answers stay in your browser to build your result. At the end you can enter an email to receive the PDF report — used only for your report and optional NSAG follow-up, never sold or shared.</p>
         <div class="intro-meta">
           <div class="meta-item"><div class="meta-num">12</div><div class="meta-label">Scenarios</div></div>
           <div class="meta-item"><div class="meta-num">6</div><div class="meta-label">Dimensions</div></div>
@@ -258,10 +259,10 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
       <div class="gate-inner">
         <div class="gate-icon">⚖️</div>
         <h2 class="gate-h">Your governance profile is ready.</h2>
-        <p class="gate-sub">Enter your email to reveal your tier. Your governance result downloads as a PDF instantly — no waiting for email.</p>
+        <p class="gate-sub">Enter your email to receive your reflection profile as a PDF. Your answers stay in your browser; your email is used only to send this report and optional NSAG updates, and is never sold or shared.</p>
         <div class="gate-form">
           <input type="email" id="gate-email" class="gate-input" placeholder="you@organization.org" aria-label="Email address">
-          <button class="btn-reveal" onclick="revealResults()">Reveal My Tier →</button>
+          <button class="btn-reveal" onclick="revealResults()">See My Reflection →</button>
           <p class="gate-note">Your results download as a PDF immediately after submission.</p>
         </div>
       </div>
@@ -271,10 +272,11 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
     <div class="screen" id="screen-results">
       <div class="results-inner">
         <div class="tier-reveal" id="tier-reveal">
-          <div class="tier-label">Your Readiness Tier</div>
+          <div class="tier-label">Your governance maturity · self-assessment</div>
           <div class="tier-name" id="tier-name">—</div>
           <div class="tier-score" id="tier-score"></div>
         </div>
+        <div style="background:#F6F3EC;border:1px solid #E4DFD3;border-radius:10px;padding:0.85rem 1rem;margin-bottom:1.25rem;font-family:'Manrope',sans-serif;font-size:0.8rem;line-height:1.55;color:#5A5869">This is a self-reported educational reflection completed by one respondent. It is not a validated index, audit, or accreditation. Its purpose is to show you where your governance is explicit and where to look next.</div>
         <div class="dim-bars" id="dim-bars"></div>
         <div class="rec-section">
           <div class="rec-label" id="rec-label">What this means</div>
@@ -510,10 +512,11 @@ function revealResults() {
 
   const dimScores = [0,0,0,0,0,0];
   answers.forEach((a,i) => { if(a) dimScores[QUESTIONS[i].dim] += a; });
+  function bandFor(sum){ return sum>=7?'Strong':sum>=5?'Partial':sum>=3?'Emerging':'Absent'; }
   const dimPcts = dimScores.map(s => Math.round((s/8)*100));
   const maxDim = dimPcts.indexOf(Math.max(...dimPcts));
   const minDim = dimPcts.indexOf(Math.min(...dimPcts));
-  dimInsight = 'Your strongest governance area is <strong>' + DIM_NAMES[maxDim] + ' (' + dimPcts[maxDim] + '%)</strong>. Your most significant gap is <strong>' + DIM_NAMES[minDim] + ' (' + dimPcts[minDim] + '%)</strong>. This pattern is common in institutions with ' + (maxDim < 3 ? 'strong environmental awareness but weaker accountability infrastructure.' : 'trained staff but underdeveloped physical and procedural governance.');
+  dimInsight = 'Your strongest governance area is <strong>' + DIM_NAMES[maxDim] + ' (' + bandFor(dimScores[maxDim]) + ')</strong>. Your most significant gap is <strong>' + DIM_NAMES[minDim] + ' (' + bandFor(dimScores[minDim]) + ')</strong>. This pattern is common in institutions with ' + (maxDim < 3 ? 'strong environmental awareness but weaker accountability infrastructure.' : 'trained staff but underdeveloped physical and procedural governance.');
 
   if (avg >= 3.5) {
     tier = 'PIONEERING'; tierColor = '#2E5A28';
@@ -561,8 +564,7 @@ function revealResults() {
     
     // Animate score counter
     const scoreEl = document.getElementById('tier-score');
-    scoreEl.textContent = '0% overall';
-    setTimeout(() => animateCounter(scoreEl, pct, '% overall · ' + totalScore + ' of ' + maxScore + ' points', 1500), 300);
+    scoreEl.textContent = 'A self-reported reflection by one respondent — not a validated score';
 
     // Dimension insight
     const insightDiv = document.createElement('div');
@@ -577,7 +579,7 @@ function revealResults() {
       const isMin = i === minDim;
       const isMax = i === maxDim;
       return '<div class="dim-bar-item">'
-        + '<div class="dim-bar-label"><span>' + n + (isMax ? ' ●' : isMin ? ' ▲' : '') + '</span><span>' + dpct + '%</span></div>'
+        + '<div class="dim-bar-label"><span>' + n + (isMax ? ' ●' : isMin ? ' ▲' : '') + '</span><span>' + bandFor(dimScores[i]) + '</span></div>'
         + '<div class="dim-bar-track"><div class="dim-bar-fill" id="bar-' + i + '" style="background:' + tierColor + '"></div></div>'
         + '</div>';
     }).join('');
@@ -769,6 +771,7 @@ function printResult() { window.print(); }
 
 
 function generateResultPDF(tier, tierColor, pct, dimScores, dimPcts, recText, email) {
+  function bandFor(sum){ return sum>=7?'Strong':sum>=5?'Partial':sum>=3?'Emerging':'Absent'; }
   try {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -820,7 +823,7 @@ function generateResultPDF(tier, tierColor, pct, dimScores, dimPcts, recText, em
     doc.setFont('helvetica','bold');
     doc.setFontSize(7.5);
     doc.setTextColor(255,255,255);
-    doc.text('YOUR READINESS TIER', margin+8, y+10);
+    doc.text('GOVERNANCE MATURITY — SELF-ASSESSMENT', margin+8, y+10);
     
     doc.setFontSize(22);
     doc.text(tier, margin+8, y+22);
@@ -828,7 +831,7 @@ function generateResultPDF(tier, tierColor, pct, dimScores, dimPcts, recText, em
     doc.setFont('helvetica','normal');
     doc.setFontSize(9);
     doc.setTextColor(255,255,255);
-    doc.text(pct + '% overall governance readiness', W-margin-4, y+22, {align:'right'});
+    doc.text('Self-reported educational reflection', W-margin-4, y+22, {align:'right'});
     
     y += 42;
     
@@ -836,7 +839,7 @@ function generateResultPDF(tier, tierColor, pct, dimScores, dimPcts, recText, em
     doc.setFont('helvetica','bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...mutedRGB);
-    doc.text('GOVERNANCE DIMENSION SCORES', margin, y);
+    doc.text('GOVERNANCE DIMENSIONS', margin, y);
     y += 6;
     
     const barH = 6; const barGap = 9; const labelW = 52;
@@ -863,7 +866,7 @@ function generateResultPDF(tier, tierColor, pct, dimScores, dimPcts, recText, em
       doc.setFont('helvetica','bold');
       doc.setFontSize(7.5);
       doc.setTextColor(...mutedRGB);
-      doc.text(dpct + '%', W - margin, barY + barH - 1.5, {align:'right'});
+      doc.text(bandFor(dimScores[i]), W - margin, barY + barH - 1.5, {align:'right'});
     });
     
     y += (DIM_NAMES.length * barGap) + 10;
