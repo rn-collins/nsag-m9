@@ -255,6 +255,7 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
         <div class="intro-tag">M9 · Cannabis Healthcare Visibility</div>
         <h1 class="intro-h">How well does your institution govern cannabis healthcare visibility?</h1>
         <p class="intro-sub">35.1% of patients report cannabis use confidentially. 4.8% have it in their chart. The same patients. The pharmacology gap between those two numbers is producing invisible drug interactions in your patient population right now.</p>
+        <p style="font-size:0.85rem;color:var(--text);line-height:1.6;margin:0 0 1.25rem;font-weight:500">Built for: primary care, surgical, and behavioral health clinicians and administrators responsible for medication safety. You'll leave with: a dimension-by-dimension view of where your institution's cannabis-documentation pipeline breaks down between disclosure and the chart.</p>
         <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;margin:-0.25rem 0 1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px">This is an educational self-assessment, not a validated test or audit. Your answers stay in your browser to build your result. At the end you can enter an email to receive the PDF report — used only for your report and optional NSAG follow-up, never sold or shared.</p>
         <div class="intro-meta">
           <div class="meta-item"><div class="meta-num">12</div><div class="meta-label">Scenarios</div></div>
@@ -330,6 +331,15 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
     <a href="https://nsag-m3.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M3 · Psychedelic Harm Reduction Governance</a> — a companion drug-policy governance challenge for supervised-use settings.<br>
     <a href="https://nsag-m4.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M4 · Cannabis Public Health Infrastructure</a> — governs population-level cannabis governance beyond the clinical encounter.<br>
     <a href="https://nsag-m11.vercel.app" target="_blank" rel="noopener" style="color:var(--navy);font-weight:600">M11 · Medical Technology & Evidence Standards</a> — governs the evidence and algorithmic standards behind clinical visibility decisions.
+  </div>
+</div>
+
+<div style="max-width:640px;margin:0 auto;padding:0 2rem 1.5rem;box-sizing:border-box">
+  <div class="module-suggest" style="line-height:1.7">
+    <strong style="font-family:Syne,sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--navy)">Why This Module Exists</strong><br><br>
+    Cannabis use is common, increasingly legal, and pharmacologically active — it is metabolized through the CYP450 enzyme system that also governs many common prescription drugs, which means undocumented use is a live drug-interaction risk, not a lifestyle footnote. The gap this module is built around is specific: roughly 35% of patients report cannabis use when asked confidentially, while under 5% of patient charts document it. That gap is not a patient-honesty problem; it is a governance problem, and it sits across six points in the clinical pathway.<br><br>
+    An institution closes the gap when it uses a validated screening instrument instead of an ad hoc question (Screening Instruments), when its EHR has a structured field for the answer (EHR Documentation Infrastructure), when its clinicians are trained on the relevant pharmacology (Provider Training & Competency), when interaction risk is flagged rather than left to individual recall (Drug Interaction Governance), when patients have a safe context to disclose in the first place (Disclosure Safety Architecture), and when someone is tracking the documentation rate as a quality metric (Quality Improvement Tracking). An institution that governs all six converts a confidential disclosure into a clinical fact the next provider can act on.
+    <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted)">Last reviewed August 2026. Cannabis legal status, scheduling, and clinical guidance continue to shift by jurisdiction — confirm current regulatory and pharmacological guidance with your institution's clinical and legal counsel before adopting policy language.</div>
   </div>
 </div>
 
@@ -545,32 +555,32 @@ function revealResults() {
 
   if (avg >= 3.5) {
     tier = 'PIONEERING'; tierColor = '#2E5A28';
-    rec = 'Your organization is functioning as a genuinely trauma-informed legal environment. Standards are written, tracked, and tied to named accountability. The governance work at this tier is durability — ensuring these standards survive personnel transitions because they are written into policy, so they hold when the people who built them move on.';
+    rec = 'Your institution treats cannabis use as ordinary clinical information that governance is responsible for capturing accurately. Screening, documentation, provider training, interaction governance, disclosure safety, and quality tracking are measured and reviewed. The work at this tier is durability — keeping the documentation rate up as staff and EHR systems turn over.';
     bridgeLabel = 'What to do with a PIONEERING result';
     bridgeText = 'Your governance is operational. The M9 Governance Toolkit contains the measurement framework and documentation audit tools to confirm your governance will survive leadership transitions. The NSAG advisory engagement benchmarks you against peers and builds quarterly accountability.';
     bridgeBtns = '<a href="' + 'https://nsag-site.vercel.app/advisory' + '" target="_blank" class="bridge-btn-primary" style="background:#2E5A28">Book an Advisory Engagement</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #2E5A28;color:#2E5A28">20-Min Discovery Call</a>';
-    crossModule = 'At PIONEERING tier: consider benchmarking against peer institutions through the NSAG cohort program, and taking the M2 Challenge if your organization uses any AI-assisted legal tools.';
+    crossModule = 'At PIONEERING tier: benchmark your documentation rate against peer institutions through the NSAG cohort program, and take the M11 Challenge if your EHR or clinical decision-support tools use algorithmic flagging for drug interactions.';
   } else if (avg >= 2.5) {
     tier = 'EMERGING'; tierColor = '#4D45A8';
-    rec = 'Your organization has meaningful trauma-informed practices in place but they are not yet systemic. Most institutions at this tier cross into PIONEERING within one advisory engagement cycle focused on the lowest-scoring dimensions.';
+    rec = 'Your institution has real cannabis-visibility practices in place, but they are not yet systemic. Most institutions at this tier close the gap between confidential disclosure and chart documentation within one QI cycle focused on the lowest-scoring dimension.';
     bridgeLabel = 'What to do with an EMERGING result';
     bridgeText = 'You have governance in place. The gap to PIONEERING is in dimensions that are partially implemented — practice exists but policy does not. The M9 Governance Toolkit contains specific policy language for each gap and a 90-day roadmap for institutions at your exact tier.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#4D45A8">Get the M9 Governance Toolkit — $500</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #4D45A8;color:#4D45A8">Book a Discovery Call</a>';
-    crossModule = 'If your ' + DIM_NAMES[minDim] + ' score is your lowest gap, the M' + (minDim < 2 ? '2' : minDim < 4 ? '8' : '2') + ' Challenge addresses the governance infrastructure most likely to accelerate your progress in that dimension.';
+    crossModule = 'Your lowest dimension, ' + DIM_NAMES[minDim] + ', is where a focused QI cycle will move you fastest toward PIONEERING.';
   } else if (avg >= 1.5) {
     tier = 'DEVELOPING'; tierColor = '#956B18';
-    rec = 'Your organization is meeting baseline legal requirements without yet designing for the physiological realities of trauma. Governance exists in some dimensions but depends on individual champions rather than institutional policy. When that person leaves, the governance leaves with them.';
+    rec = 'Your institution is meeting baseline screening expectations without yet governing for the full documentation-to-safety pipeline. Practices exist in some dimensions — a screening question here, an EHR field there — but depend on individual clinicians rather than a standing quality-improvement structure. When they leave, the practice leaves with them.';
     bridgeLabel = 'What to do with a DEVELOPING result';
     bridgeText = 'Your practices work — right now they live in the people who carry them. Writing them into policy is what makes them hold when those people move on. The M9 Governance Toolkit contains policy language templates for all six dimensions, a 90-day action plan built for DEVELOPING institutions, and the measurement framework for proving progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#956B18">Get the M9 Governance Toolkit — $500</a>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #956B18;color:#956B18">Book a Discovery Call</a>';
-    pioneeringExample = 'What PIONEERING looks like in practice: A legal aid organization in Chicago implemented a trauma-informed waiting room assessment, plain language intake forms tested with clients, and mandatory 20-minute staff debriefs after high-stress interactions. Within 6 months their client satisfaction scores improved 34% and staff reported significantly lower secondary traumatic stress symptoms.';
-    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. Once M1 governance is in place, take the M2 Challenge if you use any AI or algorithmic tools in client intake or case management.';
+    pioneeringExample = 'What PIONEERING looks like on the way there: A community health center added a validated cannabis-screening instrument to intake and a dedicated EHR field, closing much of the documentation gap. The remaining weak spot was provider training — most clinicians still didn\'t know the relevant CYP450 interaction pathways — which the center addressed with a mandatory annual competency module.';
+    crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. If your cannabis governance needs to extend beyond the clinical encounter into population health, the M4 Challenge addresses that infrastructure.';
   } else {
     tier = 'EARLY STAGE'; tierColor = '#6B2937';
-    rec = 'Your legal space is producing conditions most likely to re-traumatize the clients you serve. This is a design problem with a design solution. The fastest path forward is not a committee — it is one concrete action this week and governance language in your hands before Monday.';
+    rec = 'Your patients are very likely disclosing cannabis use to someone in your institution — confidentially, informally, inconsistently — and that information is very likely not reaching the chart, the pharmacist, or the surgeon who needs it. This is a documentation-governance problem with a documentation-governance solution: one validated screening instrument, applied consistently, is where PIONEERING institutions started.';
     bridgeLabel = 'What to do with an EARLY STAGE result';
     bridgeText = 'Most institutions begin here. The fastest path out is one concrete action this week and a governance document in your hands. The M9 Governance Toolkit gives you a 90-day roadmap, specific policy language, and measurement criteria to prove progress to leadership.';
     bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#6B2937">Get the M9 Governance Toolkit — $500</a>'
