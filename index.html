@@ -349,9 +349,24 @@ body{font-family:'Manrope',sans-serif;background:#F6F3EC!important;color:#1C1B1F
 </div>
 
 <script>
-const GUMROAD = 'https://gumroad.com/nsag';
 const BOOK = 'https://outlook.office.com/bookwithme/user/3ff7c8299177431a8fc2b099238c5e43@northeastern.edu?anonymous&ismsaljsauthenabled&ep=plink';
 const API   = 'https://nsag-api.vercel.app/api/lead';
+
+function requestToolkit(btn, moduleTag) {
+  try {
+    var emailEl = document.getElementById('gate-email');
+    var email = (emailEl && emailEl.value) ? emailEl.value.trim() : '';
+    fetch(API, {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({email: email, source: 'toolkit-waitlist-' + moduleTag,
+        message: 'Requested to purchase the ' + moduleTag + ' Governance Toolkit (waitlist — not yet available for checkout)',
+        timestamp: new Date().toISOString()})
+    }).catch(function(){});
+  } catch (e) {}
+  btn.disabled = true;
+  btn.style.cursor = 'default';
+  btn.style.opacity = '0.85';
+  btn.textContent = "You're on the list — I'll email you personally, usually within a day.";
+}
 const DIM_NAMES = ['Screening Instruments', 'EHR Documentation Infrastructure', 'Provider Training & Competency', 'Drug Interaction Governance', 'Disclosure Safety Architecture', 'Quality Improvement Tracking'];
 
 const QUESTIONS = [
@@ -567,7 +582,7 @@ function revealResults() {
     rec = 'Your institution has real cannabis-visibility practices in place, but they are not yet systemic. Most institutions at this tier close the gap between confidential disclosure and chart documentation within one QI cycle focused on the lowest-scoring dimension.';
     bridgeLabel = 'What to do with an EMERGING result';
     bridgeText = 'You have governance in place. The gap to PIONEERING is in dimensions that are partially implemented — practice exists but policy does not. The M9 Governance Toolkit contains specific policy language for each gap and a 90-day roadmap for institutions at your exact tier.';
-    bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#4D45A8">Get the M9 Governance Toolkit — $500</a>'
+    bridgeBtns = '<button type="button" onclick="requestToolkit(this,\'M9\')" class="bridge-btn-primary" style="background:#4D45A8;border:none;cursor:pointer;font:inherit">Join the M9 Toolkit Waitlist — $500</button>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #4D45A8;color:#4D45A8">Book a Discovery Call</a>';
     crossModule = 'Your lowest dimension, ' + DIM_NAMES[minDim] + ', is where a focused QI cycle will move you fastest toward PIONEERING.';
   } else if (avg >= 1.5) {
@@ -575,7 +590,7 @@ function revealResults() {
     rec = 'Your institution is meeting baseline screening expectations without yet governing for the full documentation-to-safety pipeline. Practices exist in some dimensions — a screening question here, an EHR field there — but depend on individual clinicians rather than a standing quality-improvement structure. When they leave, the practice leaves with them.';
     bridgeLabel = 'What to do with a DEVELOPING result';
     bridgeText = 'Your practices work — right now they live in the people who carry them. Writing them into policy is what makes them hold when those people move on. The M9 Governance Toolkit contains policy language templates for all six dimensions, a 90-day action plan built for DEVELOPING institutions, and the measurement framework for proving progress to leadership.';
-    bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#956B18">Get the M9 Governance Toolkit — $500</a>'
+    bridgeBtns = '<button type="button" onclick="requestToolkit(this,\'M9\')" class="bridge-btn-primary" style="background:#956B18;border:none;cursor:pointer;font:inherit">Join the M9 Toolkit Waitlist — $500</button>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #956B18;color:#956B18">Book a Discovery Call</a>';
     pioneeringExample = 'What PIONEERING looks like on the way there: A community health center added a validated cannabis-screening instrument to intake and a dedicated EHR field, closing much of the documentation gap. The remaining weak spot was provider training — most clinicians still didn\'t know the relevant CYP450 interaction pathways — which the center addressed with a mandatory annual competency module.';
     crossModule = 'Your ' + DIM_NAMES[minDim] + ' gap is the highest-leverage starting point. If your cannabis governance needs to extend beyond the clinical encounter into population health, the M4 Challenge addresses that infrastructure.';
@@ -584,7 +599,7 @@ function revealResults() {
     rec = 'Your patients are very likely disclosing cannabis use to someone in your institution — confidentially, informally, inconsistently — and that information is very likely not reaching the chart, the pharmacist, or the surgeon who needs it. This is a documentation-governance problem with a documentation-governance solution: one validated screening instrument, applied consistently, is where PIONEERING institutions started.';
     bridgeLabel = 'What to do with an EARLY STAGE result';
     bridgeText = 'Most institutions begin here. The fastest path out is one concrete action this week and a governance document in your hands. The M9 Governance Toolkit gives you a 90-day roadmap, specific policy language, and measurement criteria to prove progress to leadership.';
-    bridgeBtns = '<a href="' + GUMROAD + '" target="_blank" class="bridge-btn-primary" style="background:#6B2937">Get the M9 Governance Toolkit — $500</a>'
+    bridgeBtns = '<button type="button" onclick="requestToolkit(this,\'M9\')" class="bridge-btn-primary" style="background:#6B2937;border:none;cursor:pointer;font:inherit">Join the M9 Toolkit Waitlist — $500</button>'
               + '<a href="' + BOOK + '" class="bridge-btn-secondary" style="border:1.5px solid #6B2937;color:#6B2937">Book a Discovery Call</a>';
     pioneeringExample = "What PIONEERING looks like here: A primary care network implemented cannabis screening at 100% of patient contacts using a validated instrument, standardized EHR fields with ≥85% completion rate, CYP450 training for all clinical staff, and cannabis documentation rate as a quarterly QI metric. Within 18 months they identified 12 patients with clinically significant cannabis-drug interactions that had previously been invisible — including two on warfarin with documented CBD use."
     crossModule = "Cannabis healthcare visibility is closely linked to public health infrastructure. Take the M4 Challenge to assess your population-level cannabis governance. If your clinical AI tools influence cannabis-related care decisions, take the M11 Challenge."
