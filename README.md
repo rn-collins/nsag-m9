@@ -1,6 +1,6 @@
-# NSAG M9 — Research Integrity
+# NSAG M9 — Cannabis Healthcare Visibility
 
-Retired NSAG prototype module covering Research Integrity.
+Retired standalone deployment of NSAG module M9, Cannabis Healthcare Visibility (Healthcare & Clinical). The module's canonical page is https://nsag-site.vercel.app/m9.
 
 **Live:** https://nsag-m9.vercel.app
 
@@ -10,7 +10,7 @@ This prototype has been retired. The deployment remains online as a record; it i
 
 ## Repository contents
 
-`index.html`, `vercel.json`
+`index.html`, `vercel.json`, `og.png`, `favicon.svg`, `apple-touch-icon.png`
 
 ## Local development
 
